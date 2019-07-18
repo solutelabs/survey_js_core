@@ -7,14 +7,11 @@ class QuestionTextModel extends QuestionModel {
 
   num maxLength, size;
 
-  QuestionTextModel(Map<String, dynamic> json) : super(json);
-
-  QuestionTextModel parseQuestionTypeText(json) {
+  QuestionTextModel(Map<String, dynamic> json) : super(json) {
     inputType = getInputType(json["inputType"]);
     placeHolder = json["placeHolder"];
     maxLength = json["maxLength"];
     size = json["size"];
-    return this;
   }
 
   InputType getInputType(String type) {

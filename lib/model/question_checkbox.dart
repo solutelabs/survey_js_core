@@ -9,15 +9,12 @@ class QuestionCheckboxModel extends QuestionCheckboxBaseModel {
 
   ItemValue nonItem, selectAllItem;
 
-  QuestionCheckboxModel(Map<String, dynamic> json) : super(json);
-
-  QuestionCheckboxModel parseQuestionTypeCheckbox(Map<String, dynamic> json) {
+  QuestionCheckboxModel(Map<String, dynamic> json) : super(json){
     hasNone = json["hasNone"];
     hasSelectAll = json["hasSelectAll"];
 
     noneText = json["noneText"];
     selectAllText = json["selectAllText"];
-    return this;
   }
 
   bool isItemSelected(ItemValue itemValue) {

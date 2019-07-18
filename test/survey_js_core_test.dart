@@ -1,24 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:survey_js_core/model/element.dart';
 import 'package:survey_js_core/model/question_select_base.dart';
 
-import 'package:survey_js_core/survey_js_core.dart';
 import 'package:survey_js_core/model/question_text.dart';
 import 'package:survey_js_core/model/question_checkbox.dart';
 import 'package:survey_js_core/model/question_radio.dart';
+import 'package:survey_js_core/model/question.dart';
 
 void main() {
-  test('invalid text type check', () {
-    var json = {
-      "name": "name",
-      "type": "radiogroup",
-      "title": "Please enter your name:",
-      "placeHolder": "Jon Snow",
-      "isRequired": true
-    };
-    SurveyJsonParser surveyJsonParser = SurveyJsonParser();
-    expect(() => surveyJsonParser.parseQuestionTypeText(json), throwsException);
-  });
-
   test('parse question type text without error', () {
     var json = {
       "name": "name",
@@ -43,19 +32,7 @@ void main() {
     mockModel.no = "23";
     mockModel.isRequired = true;
 
-    SurveyJsonParser surveyJsonParser = SurveyJsonParser();
-    expect(surveyJsonParser.parseQuestionTypeText(json), mockModel);
-  });
-
-  test('invalid checkbox type check', () {
-    var json = {
-      "type": "text",
-      "name": "question1",
-      "choices": ["item1", "item2", "item3"]
-    };
-    SurveyJsonParser surveyJsonParser = SurveyJsonParser();
-    expect(() => surveyJsonParser.parseQuestionTypeCheckbox(json),
-        throwsException);
+    expect(QuestionTextModel(json), mockModel);
   });
 
   test('parse question type checkbox without error', () {
@@ -102,21 +79,8 @@ void main() {
     mockCheckboxModel.hasNone = true;
     mockCheckboxModel.noneText = "no book for my type";
     mockCheckboxModel.selectAllText = "select all book type";
-    SurveyJsonParser surveyJsonParser = SurveyJsonParser();
 
-    expect(surveyJsonParser.parseQuestionTypeCheckbox(json), mockCheckboxModel);
-  });
-
-  test('invalid radio type check', () {
-    var json = {
-      "type": "checkbox",
-      "name": "question1",
-      "startWithNewLine": false,
-      "choices": ["item1", "item2", "item3"]
-    };
-    SurveyJsonParser surveyJsonParser = SurveyJsonParser();
-    expect(() => surveyJsonParser.parseQuestionTypeRadioGroup(json),
-        throwsException);
+    expect(QuestionCheckboxModel(json), mockCheckboxModel);
   });
 
   test('parse question type radiogroup without error', () {
@@ -141,7 +105,7 @@ void main() {
 
     QuestionRadioModel mockRadioGroupModel = QuestionRadioModel(json);
 
-    mockRadioGroupModel.type = "checkbox";
+    mockRadioGroupModel.type = "radiogroup";
     mockRadioGroupModel.name = "select books type";
     mockRadioGroupModel.width = "50";
     mockRadioGroupModel.title = "select books type";
@@ -156,10 +120,112 @@ void main() {
     mockRadioGroupModel.choicesOrder = ChoiceOrder.DESC;
     mockRadioGroupModel.hideIfChoicesEmpty = true;
     mockRadioGroupModel.otherErrorText = "other is mandatory";
-    mockRadioGroupModel.showClearButton=true;
+    mockRadioGroupModel.showClearButton = true;
+    expect(QuestionRadioModel(json), mockRadioGroupModel);
+  });
 
-    SurveyJsonParser surveyJsonParser = SurveyJsonParser();
+  test('parse multiple question type', () {
+    var json = {
+      "elements": [
+        {
+          "type": "text",
+          "name": "question1",
+          "width": "20",
+          "title": "your name",
+          "description": "name will be enter here",
+          "valueName": "name",
+          "isRequired": true,
+          "requiredErrorText": "please enter your name",
+          "maxLength": 25,
+          "placeHolder": "enter your name here"
+        },
+        {
+          "type": "checkbox",
+          "name": "question2",
+          "width": "50",
+          "title": "select song language you listen",
+          "description": "select your languages of songs",
+          "valueName": "song you listen..",
+          "isRequired": true,
+          "requiredErrorText": "select atleast on language",
+          "hasComment": true,
+          "otherPlaceHolder": "other language you listen",
+          "choices": ["hindi", "english", "gujarati"],
+          "choicesOrder": "asc",
+          "hasSelectAll": true,
+          "hasNone": true,
+          "selectAllText": "all language"
+        },
+        {
+          "type": "radiogroup",
+          "name": "question3",
+          "width": "50",
+          "title": "select gender",
+          "description": "select gender",
+          "valueName": "gender",
+          "isRequired": true,
+          "requiredErrorText": "select one gender type",
+          "choices": ["male", "female", "other"],
+          "choicesOrder": "asc",
+          "hideIfChoicesEmpty": true,
+          "showClearButton": true
+        }
+      ]
+    };
 
-    expect(surveyJsonParser.parseQuestionTypeRadioGroup(json), mockRadioGroupModel);
+    Element element = Element();
+    List<QuestionModel> questions = List();
+
+    QuestionTextModel textModel = QuestionTextModel(json);
+    textModel.inputType = InputType.TEXT;
+    textModel.name = "question1";
+    textModel.type = "text";
+    textModel.title = "your name";
+    textModel.placeHolder = "enter your name here";
+    textModel.maxLength = 25;
+    textModel.width = "20";
+    textModel.valueName = "name";
+    textModel.requiredErrorText = "please enter your name";
+    textModel.isRequired = true;
+    questions.add(textModel);
+
+    QuestionCheckboxModel checkboxModel = QuestionCheckboxModel(json);
+
+    checkboxModel.type = "checkbox";
+    checkboxModel.name = "question2";
+    checkboxModel.width = "50";
+    checkboxModel.title = "select song language you listen";
+    checkboxModel.description = "select your languages of songs";
+    checkboxModel.valueName = "song you listen..";
+    checkboxModel.isRequired = true;
+    checkboxModel.requiredErrorText = "select atleast on language";
+    checkboxModel.hasComment = true;
+    checkboxModel.otherPlaceHolder = "other language you listen";
+    checkboxModel.choices = List.from(["hindi", "english", "gujarati"]);
+    checkboxModel.choicesOrder = ChoiceOrder.ASE;
+    checkboxModel.hasSelectAll = true;
+    checkboxModel.hasNone = true;
+    checkboxModel.selectAllText = "all language";
+
+    questions.add(checkboxModel);
+
+    QuestionRadioModel radioModel = QuestionRadioModel(json);
+
+    radioModel.type = "radiogroup";
+    radioModel.name = "question3";
+    radioModel.width = "50";
+    radioModel.title = "select gender";
+    radioModel.description = "select gender";
+    radioModel.valueName = "gender";
+    radioModel.isRequired = true;
+    radioModel.requiredErrorText = "select one gender type";
+    radioModel.choices = List.from(["male", "female", "other"]);
+    radioModel.choicesOrder = ChoiceOrder.ASE;
+    radioModel.hideIfChoicesEmpty = true;
+    radioModel.showClearButton = true;
+
+    questions.add(radioModel);
+
+    expect(element.parseAllQuestion(json), questions);
   });
 }
