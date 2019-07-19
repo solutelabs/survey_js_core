@@ -7,12 +7,5 @@ class QuestionRadioModel extends QuestionCheckboxBaseModel {
     showClearButton = json["showClearButton"];
   }
 
-  @override
-  bool operator ==(other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    return other is QuestionRadioModel &&
-        this.showClearButton == other.showClearButton;
-  }
+  factory QuestionRadioModel.parseJson(Map json)=>QuestionRadioModel(json);
 }

@@ -1,4 +1,4 @@
-import 'package:survey_js_core/model/element.dart';
+import 'package:survey_js_core/model/element_survey.dart';
 import 'package:survey_js_core/model/panel.dart';
 
 class PageModel {
@@ -32,7 +32,7 @@ class PageModel {
     questionTitleLocation =
         _getQuestionTitleLocation(json["questionTitleLocation"]);
 
-    element=ElementSurvey(json["elements"] as List<Map<String, dynamic>>);
+    element = ElementSurvey(json["elements"] as List<Map<String, dynamic>>);
   }
 
   QuestionOrder _getQuestionOrder(String questionOrder) {
@@ -97,12 +97,11 @@ class PageModel {
 
   @override
   bool operator ==(other) {
-   if(identical(this, other)){
-     return true;
-   }
-   return other is PageModel && other.name==this.name;
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is PageModel && other.name == this.name;
   }
-
 }
 
 enum NavigationButtonVisibility { INHERIT, SHOW, HIDE }

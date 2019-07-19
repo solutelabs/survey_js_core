@@ -50,15 +50,6 @@ class QuestionCheckboxBaseModel extends QuestionSelectBase {
   QuestionCheckboxBaseModel(Map<String, dynamic> json) : super(json) {
     colCount = json["colCount"];
   }
-
-  @override
-  bool operator ==(other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    return other is QuestionCheckboxBaseModel &&
-        this.colCount == other.colCount;
-  }
 }
 
 enum ChoiceOrder { NONE, ASE, DESC, RANDOM }

@@ -20,16 +20,4 @@ class QuestionCheckboxModel extends QuestionCheckboxBaseModel {
   bool isItemSelected(ItemValue itemValue) {
     //todo returns if item isSelected
   }
-
-  @override
-  bool operator ==(other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    return other is QuestionCheckboxModel &&
-        (this.hasNone == other.hasNone) &&
-        (this.hasSelectAll == other.hasSelectAll) &&
-        (this.noneText == other.noneText) &&
-        (this.selectAllText == other.selectAllText);
-  }
 }

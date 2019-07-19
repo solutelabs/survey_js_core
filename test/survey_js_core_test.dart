@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:survey_js_core/model/element.dart';
+import 'package:survey_js_core/model/element_survey.dart';
+import 'package:survey_js_core/model/panel.dart';
 import 'package:survey_js_core/model/question_select_base.dart';
 
 import 'package:survey_js_core/model/question_text.dart';
@@ -24,16 +25,6 @@ void main() {
     };
 
     QuestionTextModel mockModel = QuestionTextModel(json);
-    mockModel.inputType = InputType.TEXT;
-    mockModel.name = "name";
-    mockModel.type = "text";
-    mockModel.title = "Please enter your name:";
-    mockModel.placeHolder = "Jon Snow";
-    mockModel.maxLength = 10;
-    mockModel.size = 10;
-    mockModel.no = "23";
-    mockModel.isRequired = true;
-
     expect(QuestionTextModel(json), mockModel);
   });
 
@@ -61,27 +52,6 @@ void main() {
     };
 
     QuestionCheckboxModel mockCheckboxModel = QuestionCheckboxModel(json);
-
-    mockCheckboxModel.type = "checkbox";
-    mockCheckboxModel.name = "select books type";
-    mockCheckboxModel.width = "50";
-    mockCheckboxModel.title = "select books type";
-    mockCheckboxModel.description = "select books type";
-    mockCheckboxModel.valueName = "89";
-    mockCheckboxModel.colCount = 3;
-    mockCheckboxModel.isRequired = true;
-    mockCheckboxModel.requiredErrorText = "please select atleast 1 book type";
-    mockCheckboxModel.hasComment = true;
-    mockCheckboxModel.otherPlaceHolder = "please mention other book type";
-    mockCheckboxModel.choices = List.from(["fiction,thriller,biography"]);
-    mockCheckboxModel.choicesOrder = ChoiceOrder.DESC;
-    mockCheckboxModel.hideIfChoicesEmpty = true;
-    mockCheckboxModel.otherErrorText = "other is mandatory";
-    mockCheckboxModel.hasSelectAll = true;
-    mockCheckboxModel.hasNone = true;
-    mockCheckboxModel.noneText = "no book for my type";
-    mockCheckboxModel.selectAllText = "select all book type";
-
     expect(QuestionCheckboxModel(json), mockCheckboxModel);
   });
 
@@ -106,23 +76,6 @@ void main() {
     };
 
     QuestionRadioModel mockRadioGroupModel = QuestionRadioModel(json);
-
-    mockRadioGroupModel.type = "radiogroup";
-    mockRadioGroupModel.name = "select books type";
-    mockRadioGroupModel.width = "50";
-    mockRadioGroupModel.title = "select books type";
-    mockRadioGroupModel.description = "select books type";
-    mockRadioGroupModel.valueName = "89";
-    mockRadioGroupModel.colCount = 3;
-    mockRadioGroupModel.isRequired = true;
-    mockRadioGroupModel.requiredErrorText = "please select atleast 1 book type";
-    mockRadioGroupModel.hasComment = true;
-    mockRadioGroupModel.otherPlaceHolder = "please mention other book type";
-    mockRadioGroupModel.choices = List.from(["fiction,thriller,biography"]);
-    mockRadioGroupModel.choicesOrder = ChoiceOrder.DESC;
-    mockRadioGroupModel.hideIfChoicesEmpty = true;
-    mockRadioGroupModel.otherErrorText = "other is mandatory";
-    mockRadioGroupModel.showClearButton = true;
     expect(QuestionRadioModel(json), mockRadioGroupModel);
   });
 
@@ -246,14 +199,33 @@ void main() {
               "maxLength": 25,
               "placeHolder": "enter your name here"
             },
-//            {
-//              "type": "panel",
-//              "name": "panel1",
-//              "elements": [
-//                {"type": "text", "name": "question5"}
-//              ],
-//              "enableIf": "{song you listen..} = [\"hindi\"]"
-//            },
+            {
+              "type": "panel",
+              "name": "panel1",
+              "elements": [
+                {
+                  "type": "panel",
+                  "name": "panel2",
+                  "elements": [
+                    {
+                      "type": "panel",
+                      "name": "panel3",
+                      "elements": [
+                        {
+                          "type": "checkbox",
+                          "name": "question1",
+                          "choices": [
+                            "item1",
+                            "item2",
+                            "item3"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
             {
               "type": "checkbox",
               "name": "question2",
@@ -343,11 +315,43 @@ void main() {
     radioModel.showClearButton = true;
 
     questions.add(radioModel);
-    PageModel pageModel =PageModel(json);
-    pageModel.name="page1";
-    pageModel.element=ElementSurvey(json["elements"]);
-    pages.add(pageModel);
+//    PageModel pageModel = PageModel(json);
+//    pageModel.name = "page1";
+//    pageModel.element = ElementSurvey(json["elements"]);
+//    pages.add(pageModel);
     SurveyJsonParser surveyJsonParser = SurveyJsonParser();
     expect(surveyJsonParser.parseAllPages(json), pages);
+  });
+
+  test('check panel parse successfully', () {
+    var json = {
+      "type": "panel",
+      "name": "panel1",
+      "elements": [
+        {
+          "type": "panel",
+          "name": "panel2",
+          "elements": [
+            {
+              "type": "panel",
+              "name": "panel3",
+              "elements": [
+                {
+                  "type": "checkbox",
+                  "name": "question1",
+                  "choices": [
+                    "item1",
+                    "item2",
+                    "item3"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+    PanelModel panelModel = PanelModel(json);
+    expect(PanelModel(json), panelModel);
   });
 }

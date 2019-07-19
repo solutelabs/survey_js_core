@@ -101,6 +101,14 @@ class QuestionModel {
     return this;
   }
 
+  @override
+  bool operator ==(other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is QuestionModel && other.name == this.name;
+  }
+
   void addError(SurveyError surveyError) {
     //todo add error to question
   }

@@ -1,6 +1,6 @@
 import 'package:survey_js_core/model/page.dart';
 import 'package:survey_js_core/model/question.dart';
-import 'package:survey_js_core/model/element.dart';
+import 'package:survey_js_core/model/element_survey.dart';
 import 'package:survey_js_core/model/panel.dart';
 import 'base.dart';
 
@@ -202,7 +202,8 @@ class Survey extends Base implements SurveyEvents {
   }
 }
 
-class JsonError {}
+class JsonError {
+}
 
 enum SurveyMode { EDIT, DISPLAY }
 enum ErrorMode { ON_NEXT_PAGE, ON_VALUE_CHANGE }
