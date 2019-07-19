@@ -25,7 +25,7 @@ class QuestionSelectBase extends QuestionModel {
 
     hideIfChoicesEmpty = json["hideIfChoicesEmpty"];
 
-    choicesOrder=_getChoiceOrder(json["choicesOrder"]);
+    choicesOrder = _getChoiceOrder(json["choicesOrder"]);
   }
 
   ChoiceOrder _getChoiceOrder(String choiceOrder) {
@@ -53,11 +53,12 @@ class QuestionCheckboxBaseModel extends QuestionSelectBase {
 
   @override
   bool operator ==(other) {
-    QuestionCheckboxBaseModel otherModel=(other as QuestionCheckboxBaseModel);
-    return this.colCount==otherModel.colCount;
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is QuestionCheckboxBaseModel &&
+        this.colCount == other.colCount;
   }
-
-
 }
 
 enum ChoiceOrder { NONE, ASE, DESC, RANDOM }

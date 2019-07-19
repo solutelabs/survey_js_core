@@ -4,17 +4,13 @@ import 'package:survey_js_core/exceptions.dart';
 import 'question_checkbox.dart';
 import 'question_radio.dart';
 
-class Element {
+class ElementSurvey {
   List<QuestionModel> questions;
 
-  Element() {
-    questions = List();
-  }
-
-  List<QuestionModel> parseAllQuestion(Map<String, dynamic> json) {
+  ElementSurvey(List<Map<String, dynamic>> elements) {
     try {
       questions =
-          (json["elements"] as List<Map<String, dynamic>>)?.map((question) {
+          (elements)?.map((question) {
         switch (question["type"]) {
           case "text":
             return QuestionTextModel(question);
@@ -26,7 +22,6 @@ class Element {
             throw InvalidTypeException("type not match");
         }
       })?.toList();
-      return questions;
     } catch (exception) {
       print(exception);
       throw exception;

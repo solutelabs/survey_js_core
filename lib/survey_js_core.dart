@@ -1,11 +1,13 @@
 library survey_js_core;
 
-import 'model/element.dart';
-import 'model/question.dart';
+import 'model/page.dart';
 
 class SurveyJsonParser {
-  List<QuestionModel> parseAllQuestion(Map<String, dynamic> json) {
-    Element element = Element();
-    return element.parseAllQuestion(json);
+  List<PageModel> parseAllPages(Map<String, dynamic> json) {
+   var pages= (json["pages"] as List<Map<String, dynamic>>)?.map((page) {
+      PageModel pageModel=PageModel(page);
+      return pageModel;
+    })?.toList();
+   return pages;
   }
 }

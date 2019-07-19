@@ -51,11 +51,14 @@ class QuestionTextModel extends QuestionModel {
 
   @override
   bool operator ==(other) {
-    var questionTextModel = (other as QuestionTextModel);
-    return questionTextModel.placeHolder == this.placeHolder &&
-        questionTextModel.inputType == this.inputType &&
-        questionTextModel.maxLength == this.maxLength &&
-        questionTextModel.size == this.size;
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is QuestionTextModel &&
+        other.placeHolder == this.placeHolder &&
+        other.inputType == this.inputType &&
+        other.maxLength == this.maxLength &&
+        other.size == this.size;
   }
 }
 

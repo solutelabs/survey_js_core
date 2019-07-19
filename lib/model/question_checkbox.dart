@@ -9,7 +9,7 @@ class QuestionCheckboxModel extends QuestionCheckboxBaseModel {
 
   ItemValue nonItem, selectAllItem;
 
-  QuestionCheckboxModel(Map<String, dynamic> json) : super(json){
+  QuestionCheckboxModel(Map<String, dynamic> json) : super(json) {
     hasNone = json["hasNone"];
     hasSelectAll = json["hasSelectAll"];
 
@@ -23,10 +23,13 @@ class QuestionCheckboxModel extends QuestionCheckboxBaseModel {
 
   @override
   bool operator ==(other) {
-    QuestionCheckboxModel otherModel = (other as QuestionCheckboxModel);
-    return (this.hasNone == otherModel.hasNone) &&
-        (this.hasSelectAll == otherModel.hasSelectAll) &&
-        (this.noneText == otherModel.noneText) &&
-        (this.selectAllText == otherModel.selectAllText);
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is QuestionCheckboxModel &&
+        (this.hasNone == other.hasNone) &&
+        (this.hasSelectAll == other.hasSelectAll) &&
+        (this.noneText == other.noneText) &&
+        (this.selectAllText == other.selectAllText);
   }
 }

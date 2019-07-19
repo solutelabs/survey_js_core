@@ -124,7 +124,7 @@ class Survey extends Base implements SurveyEvents {
     //todo Returns the progress that a user made by answering on the survey.
   }
 
-  PageModel getPageByElement(Element element) {
+  PageModel getPageByElement(ElementSurvey element) {
     //todo Returns a page on which an element (question or panel) is placed.
   }
 
