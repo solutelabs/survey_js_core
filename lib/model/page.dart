@@ -102,6 +102,11 @@ class PageModel {
     }
     return other is PageModel && other.name == this.name;
   }
+
+  @override
+  int get hashCode {
+    return this.hashCode^this.name.hashCode;
+  }
 }
 
 enum NavigationButtonVisibility { INHERIT, SHOW, HIDE }

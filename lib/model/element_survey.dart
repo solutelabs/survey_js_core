@@ -12,11 +12,11 @@ class ElementSurvey {
 
   ElementSurvey(List<Map<String, dynamic>> elements) {
     try {
-      var typePanel = elements.where((element) {
+      final typePanel = elements.where((element) {
         return element["type"] == "panel";
       }).toList();
 
-      var typeQuestion = elements.where((element) {
+      final typeQuestion = elements.where((element) {
         return element["type"] != "panel";
       }).toList();
 

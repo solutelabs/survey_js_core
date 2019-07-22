@@ -67,6 +67,12 @@ class PanelModelBase {
     return other is PanelModel && this.name == other.name;
   }
 
+
+  @override
+  int get hashCode {
+    return this.hashCode^this.name.hashCode;
+  }
+
   bool addElement(QuestionModel questionModel, int index) {
     //todo
   }

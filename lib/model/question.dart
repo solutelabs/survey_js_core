@@ -109,6 +109,11 @@ class QuestionModel {
     return other is QuestionModel && other.name == this.name;
   }
 
+  @override
+  int get hashCode {
+    return this.hashCode ^ this.name.hashCode;
+  }
+
   void addError(SurveyError surveyError) {
     //todo add error to question
   }
