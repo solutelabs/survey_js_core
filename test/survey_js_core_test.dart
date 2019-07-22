@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:survey_js_core/model/element_survey.dart';
 import 'package:survey_js_core/model/panel.dart';
+import 'package:survey_js_core/model/question_dropdown.dart';
 
 import 'package:survey_js_core/model/question_text.dart';
 import 'package:survey_js_core/model/question_checkbox.dart';
@@ -78,6 +79,23 @@ void main() {
     expect(QuestionRadioModel(json), mockRadioGroupModel);
   });
 
+  test('parse question type dropdown without error', () {
+    var json = {
+      "type": "dropdown",
+      "name": "question17",
+      "choices": ["item1", "item2", "item3"],
+      "choicesOrder": "desc",
+      "optionsCaption": "caption for options",
+      "showOptionsCaption": false,
+      "choicesMin": 3,
+      "choicesMax": 5,
+      "choicesStep": 2
+    };
+
+    QuestionDropdownModel questionDropdownModel = QuestionDropdownModel(json);
+    expect(QuestionDropdownModel(json), questionDropdownModel);
+  });
+
   test('parse multiple question type', () {
     var json = {
       "elements": [
@@ -123,6 +141,17 @@ void main() {
           "choicesOrder": "asc",
           "hideIfChoicesEmpty": true,
           "showClearButton": true
+        },
+        {
+          "type": "dropdown",
+          "name": "question4",
+          "choices": ["item1", "item2", "item3"],
+          "choicesOrder": "desc",
+          "optionsCaption": "caption for options",
+          "showOptionsCaption": false,
+          "choicesMin": 3,
+          "choicesMax": 5,
+          "choicesStep": 2
         }
       ]
     };
@@ -130,22 +159,29 @@ void main() {
 
     var elements = json["elements"];
 
-    QuestionTextModel textModel = QuestionTextModel(elements.firstWhere((question) {
+    QuestionTextModel textModel =
+        QuestionTextModel(elements.firstWhere((question) {
       return question["type"] == "text";
     }));
     questions.add(textModel);
 
-    QuestionCheckboxModel checkboxModel = QuestionCheckboxModel(elements.firstWhere((question) {
+    QuestionCheckboxModel checkboxModel =
+        QuestionCheckboxModel(elements.firstWhere((question) {
       return question["type"] == "checkbox";
     }));
-
     questions.add(checkboxModel);
 
-    QuestionRadioModel radioModel = QuestionRadioModel(elements.firstWhere((question) {
+    QuestionRadioModel radioModel =
+        QuestionRadioModel(elements.firstWhere((question) {
       return question["type"] == "radiogroup";
     }));
-
     questions.add(radioModel);
+
+    QuestionDropdownModel questionDropdownModel= QuestionDropdownModel(elements.firstWhere((question){
+      return question["type"]=="dropdown";
+    }));
+    questions.add(questionDropdownModel);
+
     expect(ElementSurvey(json["elements"]).questions, questions);
   });
 
@@ -238,13 +274,15 @@ void main() {
     }));
     questions.add(textModel);
 
-    QuestionCheckboxModel checkboxModel = QuestionCheckboxModel(elements.firstWhere((question) {
+    QuestionCheckboxModel checkboxModel =
+        QuestionCheckboxModel(elements.firstWhere((question) {
       return question["type"] == "checkbox";
     }));
 
     questions.add(checkboxModel);
 
-    QuestionRadioModel radioModel = QuestionRadioModel(elements.firstWhere((question) {
+    QuestionRadioModel radioModel =
+        QuestionRadioModel(elements.firstWhere((question) {
       return question["type"] == "radiogroup";
     }));
 

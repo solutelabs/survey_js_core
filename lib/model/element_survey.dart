@@ -5,6 +5,7 @@ import 'question_text.dart';
 import 'package:survey_js_core/exceptions.dart';
 import 'question_checkbox.dart';
 import 'question_radio.dart';
+import 'package:survey_js_core/model/question_dropdown.dart';
 
 class ElementSurvey {
   List<QuestionModel> questions;
@@ -42,6 +43,8 @@ class ElementSurvey {
           return QuestionCheckboxModel(question);
         case "radiogroup":
           return QuestionRadioModel(question);
+        case "dropdown":
+          return QuestionDropdownModel(question);
         default:
           throw InvalidTypeException("type not match");
       }
