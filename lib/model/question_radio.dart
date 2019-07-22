@@ -6,6 +6,4 @@ class QuestionRadioModel extends QuestionCheckboxBaseModel {
   QuestionRadioModel(Map json) : super(json) {
     showClearButton = json["showClearButton"];
   }
-
-  factory QuestionRadioModel.parseJson(Map json)=>QuestionRadioModel(json);
 }

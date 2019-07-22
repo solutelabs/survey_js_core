@@ -72,6 +72,178 @@ class Survey extends Base implements SurveyEvents {
 
   List<PageModel> visiblePages;
 
+  Survey(Map<String, dynamic> json) {
+    clearValueOnDisableItem = json["clearValueOnDisableItem"];
+    firstPageIsStarted = json["clearValueOnDisableItem"];
+    focusFirstQuestionAutomatic = json["clearValueOnDisableItem"];
+    focusOnFirstError = json["clearValueOnDisableItem"];
+    goNextPageAutomatic = json["clearValueOnDisableItem"];
+    isCurrentPageHasError = json["clearValueOnDisableItem"];
+    isEditMode = json["clearValueOnDisableItem"];
+    isEmpty = json["clearValueOnDisableItem"];
+    isFirstPage = json["clearValueOnDisableItem"];
+    isLastPage = json["clearValueOnDisableItem"];
+    isNavigationButtonShowing = json["clearValueOnDisableItem"];
+    isSinglePage = json["clearValueOnDisableItem"];
+    isValidatingOnServer = json["clearValueOnDisableItem"];
+    sendResultOnPageNext = json["clearValueOnDisableItem"];
+    showCompletedPage = json["clearValueOnDisableItem"];
+    showInvisibleElements = json["clearValueOnDisableItem"];
+    showPageNumbers = json["clearValueOnDisableItem"];
+    showPageTitles = json["clearValueOnDisableItem"];
+    showPreviousButton = json["clearValueOnDisableItem"];
+    showTitle = json["clearValueOnDisableItem"];
+    showOthersAsComment = json["clearValueOnDisableItem"];
+
+    clientId = json["clientId"];
+    commentPrefix = json["commentPrefix"];
+    completeText = json["completeText"];
+    description = json["description"];
+    emptySurveyText = json["emptySurveyText"];
+    locale = json["locale"];
+    pageNextText = json["pageNextText"];
+    pagePreviousText = json["pagePreviousText"];
+    processedTitle = json["processedTitle"];
+    progressText = json["progressText"];
+    questionStartIndex = json["questionStartIndex"];
+    requiredText = json["requiredText"];
+    startSurveyText = json["startSurveyText"];
+    title = json["title"];
+
+    currentPageNumber = json["currentPageNumber"];
+    maxOtherLength = json["maxOtherLength"];
+    maxTimeToFinish = json["maxTimeToFinish"];
+    maxTimeToFinishPage = json["maxTimeToFinishPage"];
+    maxTextLength = json["maxTextLength"];
+    pageCount = json["pageCount"];
+    timeSpent = json["timeSpent"];
+    visiblePageCount = json["visiblePageCount"];
+
+    checkErrorMode = _getErrorMode(json["checkErrorsMode"]);
+    clearInvisibleValues =
+        _getClearInvisibleValues(json["clearInvisibleValues"]);
+    surveyMode = _getSurveyMode(json["surveyMode"]);
+    progressbarType = _getProgressbarType(json["progressbarType"]);
+    showNavigationButton =
+        _getShowNavigationButton(json["showNavigationButton"]);
+    showTimerPanel = _getShowTimerPanel(json["showTimerPanel"]);
+    showProgressBar = _getShowProgressbar(json["showProgressbar"]);
+    showQuestionNumber =_getShowQuestionNumber(json["showQuestionNumber"]);
+    surveyState=_getSurveyState(json["surveyState"]);
+  }
+
+  SurveyState _getSurveyState(String surveyState){
+    switch(surveyState){
+      case "loading":return SurveyState.LOADING;
+      case "completed":return SurveyState.COMPLETED;
+      case "starting":return SurveyState.STARTING;
+      case "running":return SurveyState.RUNNING;
+      case "empty":return SurveyState.EMPTY;
+      default:return SurveyState.EMPTY;
+    }
+  }
+
+  ShowQuestionNumber _getShowQuestionNumber(String showQuestionNumber){
+    switch(showQuestionNumber){
+      case "on":return ShowQuestionNumber.ON;
+      case "off":return ShowQuestionNumber.OFF;
+      case "onPage":return ShowQuestionNumber.ON_PAGE;
+      default:return ShowQuestionNumber.ON;
+    }
+  }
+
+
+  ShowProgressBar _getShowProgressbar(String showProgressbar) {
+    switch (showProgressbar) {
+      case "off":
+        return ShowProgressBar.OFF;
+      case "top":
+        return ShowProgressBar.TOP;
+      case "bottom":
+        return ShowProgressBar.BOTTOM;
+      case "both":
+        return ShowProgressBar.BOTH;
+      default:
+        return ShowProgressBar.OFF;
+    }
+  }
+
+  ShowTimerPanel _getShowTimerPanel(String showTimerPanel) {
+    switch (showTimerPanel) {
+      case "none":
+        return ShowTimerPanel.NONE;
+      case "top":
+        return ShowTimerPanel.TOP;
+      case "bottom":
+        return ShowTimerPanel.BOTTOM;
+      default:
+        return ShowTimerPanel.NONE;
+    }
+  }
+
+  ShowNavigationButton _getShowNavigationButton(String showNavigationButton) {
+    switch (showNavigationButton) {
+      case "none":
+        return ShowNavigationButton.NONE;
+      case "top":
+        return ShowNavigationButton.TOP;
+      case "bottom":
+        return ShowNavigationButton.BOTTOM;
+      case "both":
+        return ShowNavigationButton.BOTH;
+      default:
+        return ShowNavigationButton.BOTH;
+    }
+  }
+
+  ProgressbarType _getProgressbarType(String progressbarType) {
+    switch (progressbarType) {
+      case "pages":
+        return ProgressbarType.PAGES;
+      case "questions":
+        return ProgressbarType.QUESTIONS;
+      case "correct_questions":
+        return ProgressbarType.CORRECT_QUESTIONS;
+      default:
+        return ProgressbarType.PAGES;
+    }
+  }
+
+  SurveyMode _getSurveyMode(String surveyMode) {
+    switch (surveyMode) {
+      case "edit":
+        return SurveyMode.EDIT;
+      case "display":
+        return SurveyMode.DISPLAY;
+      default:
+        return SurveyMode.EDIT;
+    }
+  }
+
+  ErrorMode _getErrorMode(String errorMode) {
+    switch (errorMode) {
+      case "onNextPage":
+        return ErrorMode.ON_NEXT_PAGE;
+      case "onValueChanged":
+        return ErrorMode.ON_VALUE_CHANGE;
+      default:
+        return ErrorMode.ON_NEXT_PAGE;
+    }
+  }
+
+  ClearInvisibleValues _getClearInvisibleValues(String clearInvisibleValue) {
+    switch (clearInvisibleValue) {
+      case "none":
+        return ClearInvisibleValues.NONE;
+      case "onComplete":
+        return ClearInvisibleValues.ON_COMPLETE;
+      case "onHidden":
+        return ClearInvisibleValues.ON_HIDDEN;
+      default:
+        return ClearInvisibleValues.ON_COMPLETE;
+    }
+  }
+
   void addNewPage(String name) {
     //todo add page to [pages]
   }
@@ -152,8 +324,8 @@ class Survey extends Base implements SurveyEvents {
     //todo Returns a question by its name
   }
 
-  List<QuestionModel> getQuestionByNames(
-      List<String> names, bool caseInsensitive) {
+  List<QuestionModel> getQuestionByNames(List<String> names,
+      bool caseInsensitive) {
     //todo Get a list of questions by their names
   }
 
@@ -202,8 +374,7 @@ class Survey extends Base implements SurveyEvents {
   }
 }
 
-class JsonError {
-}
+class JsonError {}
 
 enum SurveyMode { EDIT, DISPLAY }
 enum ErrorMode { ON_NEXT_PAGE, ON_VALUE_CHANGE }

@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:survey_js_core/model/element_survey.dart';
 import 'package:survey_js_core/model/panel.dart';
-import 'package:survey_js_core/model/question_select_base.dart';
 
 import 'package:survey_js_core/model/question_text.dart';
 import 'package:survey_js_core/model/question_checkbox.dart';
@@ -129,53 +128,22 @@ void main() {
     };
     List<QuestionModel> questions = List();
 
-    QuestionTextModel textModel = QuestionTextModel(json);
-    textModel.inputType = InputType.TEXT;
-    textModel.name = "question1";
-    textModel.type = "text";
-    textModel.title = "your name";
-    textModel.placeHolder = "enter your name here";
-    textModel.maxLength = 25;
-    textModel.width = "20";
-    textModel.valueName = "name";
-    textModel.requiredErrorText = "please enter your name";
-    textModel.isRequired = true;
+    var elements = json["elements"];
+
+    QuestionTextModel textModel = QuestionTextModel(elements.firstWhere((question) {
+      return question["type"] == "text";
+    }));
     questions.add(textModel);
 
-    QuestionCheckboxModel checkboxModel = QuestionCheckboxModel(json);
-
-    checkboxModel.type = "checkbox";
-    checkboxModel.name = "question2";
-    checkboxModel.width = "50";
-    checkboxModel.title = "select song language you listen";
-    checkboxModel.description = "select your languages of songs";
-    checkboxModel.valueName = "song you listen..";
-    checkboxModel.isRequired = true;
-    checkboxModel.requiredErrorText = "select atleast on language";
-    checkboxModel.hasComment = true;
-    checkboxModel.otherPlaceHolder = "other language you listen";
-    checkboxModel.choices = List.from(["hindi", "english", "gujarati"]);
-    checkboxModel.choicesOrder = ChoiceOrder.ASE;
-    checkboxModel.hasSelectAll = true;
-    checkboxModel.hasNone = true;
-    checkboxModel.selectAllText = "all language";
+    QuestionCheckboxModel checkboxModel = QuestionCheckboxModel(elements.firstWhere((question) {
+      return question["type"] == "checkbox";
+    }));
 
     questions.add(checkboxModel);
 
-    QuestionRadioModel radioModel = QuestionRadioModel(json);
-
-    radioModel.type = "radiogroup";
-    radioModel.name = "question3";
-    radioModel.width = "50";
-    radioModel.title = "select gender";
-    radioModel.description = "select gender";
-    radioModel.valueName = "gender";
-    radioModel.isRequired = true;
-    radioModel.requiredErrorText = "select one gender type";
-    radioModel.choices = List.from(["male", "female", "other"]);
-    radioModel.choicesOrder = ChoiceOrder.ASE;
-    radioModel.hideIfChoicesEmpty = true;
-    radioModel.showClearButton = true;
+    QuestionRadioModel radioModel = QuestionRadioModel(elements.firstWhere((question) {
+      return question["type"] == "radiogroup";
+    }));
 
     questions.add(radioModel);
     expect(ElementSurvey(json["elements"]).questions, questions);
@@ -214,11 +182,7 @@ void main() {
                         {
                           "type": "checkbox",
                           "name": "question1",
-                          "choices": [
-                            "item1",
-                            "item2",
-                            "item3"
-                          ]
+                          "choices": ["item1", "item2", "item3"]
                         }
                       ]
                     }
@@ -264,61 +228,31 @@ void main() {
     };
 
     List<PageModel> pages = List();
+    var page = (json["pages"]).first;
+    var elements = page["elements"] as List<Map<String, dynamic>>;
     List<QuestionModel> questions = List();
 
-    QuestionTextModel textModel = QuestionTextModel(json);
-    textModel.inputType = InputType.TEXT;
-    textModel.name = "question1";
-    textModel.type = "text";
-    textModel.title = "your name";
-    textModel.placeHolder = "enter your name here";
-    textModel.maxLength = 25;
-    textModel.width = "20";
-    textModel.valueName = "name";
-    textModel.requiredErrorText = "please enter your name";
-    textModel.isRequired = true;
+    QuestionTextModel textModel =
+        QuestionTextModel(elements.firstWhere((question) {
+      return question["type"] == "text";
+    }));
     questions.add(textModel);
 
-    QuestionCheckboxModel checkboxModel = QuestionCheckboxModel(json);
-
-    checkboxModel.type = "checkbox";
-    checkboxModel.name = "question2";
-    checkboxModel.width = "50";
-    checkboxModel.title = "select song language you listen";
-    checkboxModel.description = "select your languages of songs";
-    checkboxModel.valueName = "song you listen..";
-    checkboxModel.isRequired = true;
-    checkboxModel.requiredErrorText = "select atleast on language";
-    checkboxModel.hasComment = true;
-    checkboxModel.otherPlaceHolder = "other language you listen";
-    checkboxModel.choices = List.from(["hindi", "english", "gujarati"]);
-    checkboxModel.choicesOrder = ChoiceOrder.ASE;
-    checkboxModel.hasSelectAll = true;
-    checkboxModel.hasNone = true;
-    checkboxModel.selectAllText = "all language";
+    QuestionCheckboxModel checkboxModel = QuestionCheckboxModel(elements.firstWhere((question) {
+      return question["type"] == "checkbox";
+    }));
 
     questions.add(checkboxModel);
 
-    QuestionRadioModel radioModel = QuestionRadioModel(json);
-
-    radioModel.type = "radiogroup";
-    radioModel.name = "question3";
-    radioModel.width = "50";
-    radioModel.title = "select gender";
-    radioModel.description = "select gender";
-    radioModel.valueName = "gender";
-    radioModel.isRequired = true;
-    radioModel.requiredErrorText = "select one gender type";
-    radioModel.choices = List.from(["male", "female", "other"]);
-    radioModel.choicesOrder = ChoiceOrder.ASE;
-    radioModel.hideIfChoicesEmpty = true;
-    radioModel.showClearButton = true;
+    QuestionRadioModel radioModel = QuestionRadioModel(elements.firstWhere((question) {
+      return question["type"] == "radiogroup";
+    }));
 
     questions.add(radioModel);
-//    PageModel pageModel = PageModel(json);
-//    pageModel.name = "page1";
-//    pageModel.element = ElementSurvey(json["elements"]);
-//    pages.add(pageModel);
+    PageModel pageModel = PageModel(page);
+    pageModel.name = "page1";
+    pageModel.element = ElementSurvey(elements);
+    pages.add(pageModel);
     SurveyJsonParser surveyJsonParser = SurveyJsonParser();
     expect(surveyJsonParser.parseAllPages(json), pages);
   });
@@ -339,11 +273,7 @@ void main() {
                 {
                   "type": "checkbox",
                   "name": "question1",
-                  "choices": [
-                    "item1",
-                    "item2",
-                    "item3"
-                  ]
+                  "choices": ["item1", "item2", "item3"]
                 }
               ]
             }
@@ -353,5 +283,177 @@ void main() {
     };
     PanelModel panelModel = PanelModel(json);
     expect(PanelModel(json), panelModel);
+  });
+
+  test('parse survey successfully', () {
+    var json = {
+      "title": "survey title",
+      "pages": [
+        {
+          "name": "page1",
+          "elements": [
+            {
+              "type": "text",
+              "name": "question",
+              "width": "20",
+              "title": "your name",
+              "description": "name will be enter here",
+              "valueName": "name",
+              "isRequired": true,
+              "requiredErrorText": "please enter your name",
+              "maxLength": 25,
+              "placeHolder": "enter your name here"
+            },
+            {
+              "type": "checkbox",
+              "name": "question1",
+              "width": "50",
+              "title": "select song language you listen",
+              "description": "select your languages of songs",
+              "valueName": "song you listen..",
+              "isRequired": true,
+              "requiredErrorText": "select atleast on language",
+              "hasComment": true,
+              "otherPlaceHolder": "other language you listen",
+              "choices": ["hindi", "english", "gujarati"],
+              "choicesOrder": "asc",
+              "hasSelectAll": true,
+              "hasNone": true,
+              "selectAllText": "all language"
+            },
+            {
+              "type": "radiogroup",
+              "name": "question3",
+              "width": "50",
+              "title": "select gender",
+              "description": "select gender",
+              "valueName": "gender",
+              "isRequired": true,
+              "requiredErrorText": "select one gender type",
+              "choices": ["male", "female", "other"],
+              "choicesOrder": "asc",
+              "hideIfChoicesEmpty": true,
+              "showClearButton": true
+            }
+          ],
+          "questionTitleLocation": "top"
+        },
+        {
+          "name": "page2",
+          "elements": [
+            {
+              "type": "checkbox",
+              "name": "question2",
+              "choices": ["item1", "item2", "item3"]
+            },
+            {
+              "type": "panel",
+              "name": "panel1",
+              "elements": [
+                {
+                  "type": "radiogroup",
+                  "name": "question4",
+                  "choices": ["item1", "item2", "item3"]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "page3",
+          "elements": [
+            {
+              "type": "checkbox",
+              "name": "question5",
+              "choices": ["item1", "item2", "item3"]
+            },
+            {
+              "type": "radiogroup",
+              "name": "question6",
+              "choices": ["item1", "item2", "item3"]
+            }
+          ]
+        },
+        {
+          "name": "page4",
+          "elements": [
+            {"type": "text", "name": "question7"},
+            {
+              "type": "checkbox",
+              "name": "question8",
+              "choices": ["item1", "item2", "item3"]
+            }
+          ]
+        },
+        {
+          "name": "page5",
+          "elements": [
+            {
+              "type": "checkbox",
+              "name": "question9",
+              "choices": ["item1", "item2", "item3"]
+            },
+            {"type": "text", "name": "question10"},
+            {
+              "type": "radiogroup",
+              "name": "question11",
+              "choices": ["item1", "item2", "item3"]
+            }
+          ]
+        },
+        {
+          "name": "page6",
+          "elements": [
+            {
+              "type": "checkbox",
+              "name": "question12",
+              "choices": ["item1", "item2", "item3"]
+            },
+            {"type": "text", "name": "question13"},
+            {
+              "type": "radiogroup",
+              "name": "question14",
+              "choices": ["item1", "item2", "item3"]
+            }
+          ]
+        },
+        {
+          "name": "page7",
+          "elements": [
+            {
+              "type": "panel",
+              "name": "panel2",
+              "elements": [
+                {
+                  "type": "panel",
+                  "name": "panel3",
+                  "elements": [
+                    {
+                      "type": "checkbox",
+                      "name": "question16",
+                      "choices": ["item1", "item2", "item3"]
+                    }
+                  ]
+                },
+                {
+                  "type": "radiogroup",
+                  "name": "question15",
+                  "choices": ["item1", "item2", "item3"]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "showQuestionNumbers": "onPage",
+      "showProgressBar": "top",
+      "clearInvisibleValues": "onHidden",
+      "checkErrorsMode": "onValueChanged",
+      "showTimerPanel": "top",
+      "showTimerPanelMode": "page"
+    };
+
+    SurveyJsonParser surveyJsonParser = SurveyJsonParser();
+    surveyJsonParser.parseSurveyJson(json);
   });
 }
