@@ -21,7 +21,16 @@ void main() {
       "maxLength": 10,
       "size": 10,
       "no": "23",
-      "isRequired": true
+      "isRequired": true,
+      "validators": [
+        {
+          "type": "text",
+          "text": "text cant be empty",
+          "minLength": 1,
+          "maxLength": 25,
+          "allowDigits": true
+        }
+      ]
     };
 
     QuestionTextModel mockModel = QuestionTextModel(json);

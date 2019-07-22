@@ -395,18 +395,22 @@ class SurveyValidator {
 
   ValidatorType validatorType;
 
-  num minValue, maxValue, minCount, maxCount;
+  num minValue, maxValue, minCount, maxCount,minLength,maxLength;
 
   bool allowDigit;
 
   SurveyValidator(Map<String, dynamic> validator) {
     validatorType = _getValidatorType(validator["type"]);
+    text=validator["text"];
     maxCount = validator["maxCount"];
     minCount = validator["minCount"];
     minValue = validator["minValue"];
     maxValue = validator["maxValue"];
+    minLength = validator["minLength"];
+    maxLength = validator["maxLength"];
     regex = validator["regex"];
     expression = validator["expression"];
+    allowDigit=validator["allowDigit"];
   }
 
   ValidatorType _getValidatorType(String type) {
