@@ -3,6 +3,8 @@ import 'package:survey_js_core/model/question.dart';
 import 'package:survey_js_core/model/survey.dart';
 import 'package:survey_js_core/survey_js_core.dart';
 
+import 'model/panel.dart';
+
 class SurveyChecker {
   List<SurveyCheckerError> surveyCheckerError;
 
@@ -10,11 +12,19 @@ class SurveyChecker {
       Survey surveyModel, List<Map<String, dynamic>> data) {
     PageModel pageModel = surveyModel.pages.first;
 
-    pageModel.element.questions.forEach((surveyQuestion) {
+    validateQuestions(pageModel.element.questions, data);
+
+    validatePanels(pageModel.element.panels, data);
+    return surveyCheckerError;
+  }
+
+  void validateQuestions(
+      List<QuestionModel> questions, List<Map<String, dynamic>> data) {
+    questions.forEach((surveyQuestion) {
       Map<String, dynamic> answerToValidate;
       try {
         answerToValidate = data.firstWhere((answer) {
-          var questionName = answer.keys.first;
+          String questionName = answer.keys.first;
           return questionName == surveyQuestion.name;
         });
       } catch (exception) {}
@@ -34,7 +44,7 @@ class SurveyChecker {
               if (!isRequiredFieldValid) {
                 surveyCheckerError ??= List();
                 surveyCheckerError.add(SurveyCheckerError(
-                    {surveyQuestion.name: "field is empty"}));
+                    {surveyQuestion.name: "field is required"}));
               }
             }
 
@@ -55,7 +65,7 @@ class SurveyChecker {
               if (!isRequiredFieldValid) {
                 surveyCheckerError ??= List();
                 surveyCheckerError.add(SurveyCheckerError(
-                    {surveyQuestion.name: "field is empty"}));
+                    {surveyQuestion.name: "field is required"}));
               }
             }
 
@@ -76,7 +86,7 @@ class SurveyChecker {
               if (!isRequiredFieldValid) {
                 surveyCheckerError ??= List();
                 surveyCheckerError.add(SurveyCheckerError(
-                    {surveyQuestion.name: "field is empty"}));
+                    {surveyQuestion.name: "field is required"}));
               }
             }
 
@@ -85,7 +95,6 @@ class SurveyChecker {
           }
       }
     });
-    return surveyCheckerError;
   }
 
   void _checkQuestionValidator(QuestionModel surveyQuestion, dynamic input,
@@ -131,15 +140,7 @@ class SurveyChecker {
             break;
 
           case ValidatorType.EXPRESSION:
-            int startIndex = validator.expression.indexOf("{");
-            int endIndex = validator.expression.indexOf("}");
-            String question =
-                validator.expression.substring(startIndex + 1, endIndex);
-            print(question);
-            var expressionAnswer=data.firstWhere((answer){
-              return answer.keys.first==question;
-            });
-            var data=expressionAnswer?.values?.first;
+            // TODO
             break;
 
           case ValidatorType.ANSWER_COUNT:
@@ -150,6 +151,20 @@ class SurveyChecker {
     } catch (exception) {
       print(exception);
     }
+  }
+
+  void validatePanels(List<PanelModel> panels, List<Map<String, dynamic>> data) {
+    panels?.forEach((panel) {
+      try {
+        if (panel.elementSurvey.questions != null) {
+          validateQuestions(panel.elementSurvey.questions, data);
+        }else{
+          validatePanels(panel.elementSurvey.panels, data);
+        }
+      } catch (exception) {
+        validatePanels(panel.elementSurvey.panels, data);
+      }
+    });
   }
 }
 
@@ -168,7 +183,7 @@ class SurveyCheckerError {
   }
 
   @override
-  int get hashCode => this.map.hashCode;
+  int get hashCode => this.map.keys.first.hashCode;
 }
 
 void main() {

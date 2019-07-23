@@ -28,7 +28,7 @@ class QuestionModel {
       isAllowTitleLeft,
       isPanel,
       isReadOnly,
-      isRequired,
+      isRequired=false,
       isVisible,
       startWithNewLine,
       visible;
@@ -75,7 +75,7 @@ class QuestionModel {
       isAllowTitleLeft = json["isAllowTitleLeft"];
       isPanel = json["isPanel"];
       isReadOnly = json["isReadOnly"];
-      isRequired = json["isRequired"];
+      isRequired = json["isRequired"]??false;
       isVisible = json["isVisible"];
       startWithNewLine = json["startWithNewLine"];
       visible = json["visible"];

@@ -44,8 +44,9 @@ void main() {
                     "elements": [
                       {
                         "type": "checkbox",
-                        "name": "question7",
-                        "choices": ["item1", "item2", "item3"]
+                        "name": "question2",
+                        "isRequired":true,
+                        "choices": ["itemA","itemB","itemC"]
                       }
                     ]
                   }
@@ -55,7 +56,7 @@ void main() {
           },
           {
             "type": "checkbox",
-            "name": "question2",
+            "name": "question7",
             "width": "50",
             "title": "select song language you listen",
             "description": "select your languages of songs",
@@ -92,18 +93,15 @@ void main() {
   SurveyJsonParser surveyJsonParser = SurveyJsonParser();
   List<Map<String, dynamic>> data = List();
   data.add({"question1": "test"});
-  data.add({"question2": []});
-
   List<SurveyCheckerError> errors = List();
 
   errors.add(SurveyCheckerError({"question1": "invalid text entered"}));
-  errors.add(SurveyCheckerError({"question2": "field is empty"}));
+  errors.add(SurveyCheckerError({"question7": "field is empty"}));
   errors.add(SurveyCheckerError({"question3": "field is empty"}));
+  errors.add(SurveyCheckerError({"question2": "field is empty"}));
 
   test('check survey validations', () {
-    expect(
-        surveyChecker.completeSurvey(
-            surveyJsonParser.parseSurveyJson(survey), data),
+    expect(surveyChecker.completeSurvey(surveyJsonParser.parseSurveyJson(survey), data),
         errors);
   });
 }
