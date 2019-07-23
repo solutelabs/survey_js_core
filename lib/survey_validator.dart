@@ -1,9 +1,10 @@
 import 'package:survey_js_core/model/page.dart';
 import 'package:survey_js_core/model/question.dart';
 import 'package:survey_js_core/model/survey.dart';
+import 'package:survey_js_core/survey_js_core.dart';
 
 class SurveyChecker {
-  List<SurveyCheckerError> surveyCheckerErrors = List();
+  List<SurveyCheckerError> surveyCheckerError;
 
   List<SurveyCheckerError> completeSurvey(
       Survey surveyModel, List<Map<String, dynamic>> data) {
@@ -31,12 +32,13 @@ class SurveyChecker {
               }
 
               if (!isRequiredFieldValid) {
-                surveyCheckerErrors.add(SurveyCheckerError(
+                surveyCheckerError ??= List();
+                surveyCheckerError.add(SurveyCheckerError(
                     {surveyQuestion.name: "field is empty"}));
               }
             }
 
-            checkQuestionValidator(surveyQuestion, input);
+            _checkQuestionValidator(surveyQuestion, input, data);
             break;
           }
         case "checkbox":
@@ -51,12 +53,13 @@ class SurveyChecker {
               }
 
               if (!isRequiredFieldValid) {
-                surveyCheckerErrors.add(SurveyCheckerError(
+                surveyCheckerError ??= List();
+                surveyCheckerError.add(SurveyCheckerError(
                     {surveyQuestion.name: "field is empty"}));
               }
             }
 
-            checkQuestionValidator(surveyQuestion, choices);
+            _checkQuestionValidator(surveyQuestion, choices, data);
 
             break;
           }
@@ -71,57 +74,72 @@ class SurveyChecker {
                 isRequiredFieldValid = false;
               }
               if (!isRequiredFieldValid) {
-                surveyCheckerErrors.add(SurveyCheckerError(
+                surveyCheckerError ??= List();
+                surveyCheckerError.add(SurveyCheckerError(
                     {surveyQuestion.name: "field is empty"}));
               }
             }
 
-            checkQuestionValidator(surveyQuestion, choices);
+            _checkQuestionValidator(surveyQuestion, choices, data);
             break;
           }
       }
     });
-    return surveyCheckerErrors;
+    return surveyCheckerError;
   }
 
-  void checkQuestionValidator(QuestionModel surveyQuestion, dynamic input) {
+  void _checkQuestionValidator(QuestionModel surveyQuestion, dynamic input,
+      List<Map<String, dynamic>> data) {
     try {
       surveyQuestion.surveyValidators?.forEach((validator) {
         switch (validator.validatorType) {
           case ValidatorType.TEXT:
             if (input.length < validator.minLength ||
                 input.length > validator.maxLength) {
-              surveyCheckerErrors.add(
+              surveyCheckerError ??= List();
+              surveyCheckerError.add(
                   SurveyCheckerError({surveyQuestion.name: validator.text}));
             }
             if (!validator.allowDigit && RegExp("[0-9]").hasMatch(input)) {
-              surveyCheckerErrors.add(
+              surveyCheckerError ??= List();
+              surveyCheckerError.add(
                   SurveyCheckerError({surveyQuestion.name: validator.text}));
             }
             break;
           case ValidatorType.NUMERIC:
             int value = int.parse(input);
             if (value < validator.minValue || value > validator.maxValue) {
-              surveyCheckerErrors.add(
+              surveyCheckerError ??= List();
+              surveyCheckerError.add(
                   SurveyCheckerError({surveyQuestion.name: validator.text}));
             }
             break;
           case ValidatorType.REGEX:
             if (!RegExp(validator.regex).hasMatch(input)) {
-              surveyCheckerErrors.add(
+              surveyCheckerError ??= List();
+              surveyCheckerError.add(
                   SurveyCheckerError({surveyQuestion.name: validator.text}));
             }
             break;
           case ValidatorType.EMAIL:
             if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(input)) {
-              surveyCheckerErrors.add(
+              surveyCheckerError ??= List();
+              surveyCheckerError.add(
                   SurveyCheckerError({surveyQuestion.name: validator.text}));
             }
             break;
 
           case ValidatorType.EXPRESSION:
-            //TODO
+            int startIndex = validator.expression.indexOf("{");
+            int endIndex = validator.expression.indexOf("}");
+            String question =
+                validator.expression.substring(startIndex + 1, endIndex);
+            print(question);
+            var expressionAnswer=data.firstWhere((answer){
+              return answer.keys.first==question;
+            });
+            var data=expressionAnswer?.values?.first;
             break;
 
           case ValidatorType.ANSWER_COUNT:
@@ -135,7 +153,7 @@ class SurveyChecker {
   }
 }
 
-class SurveyCheckerError implements Exception {
+class SurveyCheckerError {
   Map<String, String> map;
 
   SurveyCheckerError(this.map);
@@ -151,4 +169,99 @@ class SurveyCheckerError implements Exception {
 
   @override
   int get hashCode => this.map.hashCode;
+}
+
+void main() {
+  SurveyChecker surveyChecker = SurveyChecker();
+  var survey = {
+    "pages": [
+      {
+        "name": "page1",
+        "elements": [
+          {
+            "type": "text",
+            "name": "question1",
+            "width": "20",
+            "title": "your name",
+            "description": "name will be enter here",
+            "valueName": "name",
+            "isRequired": true,
+            "validators": [
+              {
+                "type": "text",
+                "text": "invalid text entered",
+                "minLength": 5,
+                "maxLength": 25,
+                "allowDigits": true
+              }
+            ],
+            "requiredErrorText": "please enter your name",
+            "maxLength": 25,
+            "placeHolder": "enter your name here"
+          },
+          {
+            "type": "panel",
+            "name": "panel1",
+            "elements": [
+              {
+                "type": "panel",
+                "name": "panel2",
+                "elements": [
+                  {
+                    "type": "panel",
+                    "name": "panel3",
+                    "elements": [
+                      {
+                        "type": "checkbox",
+                        "name": "question7",
+                        "choices": ["item1", "item2", "item3"]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "name": "question2",
+            "width": "50",
+            "title": "select song language you listen",
+            "description": "select your languages of songs",
+            "valueName": "song you listen..",
+            "isRequired": true,
+            "requiredErrorText": "select atleast on language",
+            "hasComment": true,
+            "otherPlaceHolder": "other language you listen",
+            "choices": ["hindi", "english", "gujarati"],
+            "choicesOrder": "asc",
+            "hasSelectAll": true,
+            "hasNone": true,
+            "selectAllText": "all language"
+          },
+          {
+            "type": "radiogroup",
+            "name": "question3",
+            "width": "50",
+            "title": "select gender",
+            "description": "select gender",
+            "valueName": "gender",
+            "isRequired": true,
+            "requiredErrorText": "select one gender type",
+            "choices": ["male", "female", "other"],
+            "choicesOrder": "asc",
+            "hideIfChoicesEmpty": true,
+            "showClearButton": true
+          }
+        ],
+        "questionTitleLocation": "top"
+      }
+    ]
+  };
+  SurveyJsonParser surveyJsonParser = SurveyJsonParser();
+  List<Map<String, dynamic>> data = List();
+  data.add({"question1": "test"});
+  data.add({"question2": []});
+
+  surveyChecker.completeSurvey(surveyJsonParser.parseSurveyJson(survey), data);
 }

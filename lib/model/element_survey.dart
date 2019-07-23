@@ -30,7 +30,6 @@ class ElementSurvey {
       }
     } catch (exception) {
       print(exception);
-      throw exception;
     }
   }
 

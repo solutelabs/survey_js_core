@@ -102,6 +102,8 @@ void main() {
 
   test('check survey validations', () {
     expect(
-        surveyChecker.completeSurvey(surveyJsonParser.parseSurveyJson(survey), data), errors);
+        surveyChecker.completeSurvey(
+            surveyJsonParser.parseSurveyJson(survey), data),
+        errors);
   });
 }

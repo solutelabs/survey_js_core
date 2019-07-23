@@ -410,7 +410,7 @@ class SurveyValidator {
     maxLength = validator["maxLength"];
     regex = validator["regex"];
     expression = validator["expression"];
-    allowDigit=validator["allowDigit"]??=true;
+    allowDigit= validator["allowDigit"];
   }
 
   ValidatorType _getValidatorType(String type) {
