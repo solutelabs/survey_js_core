@@ -23,22 +23,22 @@ class SurveyChecker {
     questions.forEach((surveyQuestion) {
       Map<String, dynamic> answerToValidate;
       try {
-        answerToValidate = data.firstWhere((answer) {
+        answerToValidate = data?.firstWhere((answer) {
           String questionName = answer.keys.first;
           return questionName == surveyQuestion.name;
         });
-      } catch (exception) {}
+      } catch (exception) {
+        print(exception);
+      }
 
       switch (surveyQuestion.type) {
         case "text":
           {
             String input = answerToValidate?.values?.first;
             if (surveyQuestion.isRequired) {
-              bool isRequiredFieldValid;
+              bool isRequiredFieldValid = false;
               if (input != null) {
                 isRequiredFieldValid = input.isNotEmpty;
-              } else {
-                isRequiredFieldValid = false;
               }
 
               if (!isRequiredFieldValid) {
@@ -55,11 +55,9 @@ class SurveyChecker {
           {
             List<dynamic> choices = answerToValidate?.values?.first;
             if (surveyQuestion.isRequired) {
-              bool isRequiredFieldValid;
+              bool isRequiredFieldValid = false;
               if (choices != null) {
                 isRequiredFieldValid = choices.isNotEmpty;
-              } else {
-                isRequiredFieldValid = false;
               }
 
               if (!isRequiredFieldValid) {
@@ -77,11 +75,9 @@ class SurveyChecker {
           {
             List<dynamic> choices = answerToValidate?.values?.first;
             if (surveyQuestion.isRequired) {
-              bool isRequiredFieldValid;
+              bool isRequiredFieldValid = false;
               if (choices != null) {
                 isRequiredFieldValid = choices.isNotEmpty;
-              } else {
-                isRequiredFieldValid = false;
               }
               if (!isRequiredFieldValid) {
                 surveyCheckerError ??= List();
@@ -153,12 +149,13 @@ class SurveyChecker {
     }
   }
 
-  void validatePanels(List<PanelModel> panels, List<Map<String, dynamic>> data) {
+  void validatePanels(
+      List<PanelModel> panels, List<Map<String, dynamic>> data) {
     panels?.forEach((panel) {
       try {
         if (panel.elementSurvey.questions != null) {
           validateQuestions(panel.elementSurvey.questions, data);
-        }else{
+        } else {
           validatePanels(panel.elementSurvey.panels, data);
         }
       } catch (exception) {
@@ -175,9 +172,6 @@ class SurveyCheckerError {
 
   @override
   bool operator ==(other) {
-    if (identical(this, other)) {
-      return true;
-    }
     return other is SurveyCheckerError &&
         other.map.keys.first == this.map.keys.first;
   }
@@ -196,9 +190,7 @@ void main() {
           {
             "type": "text",
             "name": "question1",
-            "width": "20",
             "title": "your name",
-            "description": "name will be enter here",
             "valueName": "name",
             "isRequired": true,
             "validators": [
@@ -208,11 +200,23 @@ void main() {
                 "minLength": 5,
                 "maxLength": 25,
                 "allowDigits": true
+              },
+              {
+                "type": "email",
+                "text": "invalid email entered",
+              },
+              {
+                "type": "regex",
+                "text": "invalid regex entered",
+                "regex":"[a-zA-Z]"
+              },
+              {
+                "type": "numeric",
+                "text": "invalid value entered",
+                "minValue": 5,
+                "maxValue": 25,
               }
             ],
-            "requiredErrorText": "please enter your name",
-            "maxLength": 25,
-            "placeHolder": "enter your name here"
           },
           {
             "type": "panel",
@@ -227,8 +231,9 @@ void main() {
                     "name": "panel3",
                     "elements": [
                       {
-                        "type": "checkbox",
+                        "type": "radiogroup",
                         "name": "question7",
+                        "isRequired":true,
                         "choices": ["item1", "item2", "item3"]
                       }
                     ]
@@ -240,36 +245,21 @@ void main() {
           {
             "type": "checkbox",
             "name": "question2",
-            "width": "50",
             "title": "select song language you listen",
-            "description": "select your languages of songs",
             "valueName": "song you listen..",
             "isRequired": true,
-            "requiredErrorText": "select atleast on language",
             "hasComment": true,
-            "otherPlaceHolder": "other language you listen",
             "choices": ["hindi", "english", "gujarati"],
-            "choicesOrder": "asc",
-            "hasSelectAll": true,
-            "hasNone": true,
             "selectAllText": "all language"
           },
           {
             "type": "radiogroup",
             "name": "question3",
-            "width": "50",
             "title": "select gender",
-            "description": "select gender",
-            "valueName": "gender",
             "isRequired": true,
-            "requiredErrorText": "select one gender type",
             "choices": ["male", "female", "other"],
-            "choicesOrder": "asc",
-            "hideIfChoicesEmpty": true,
-            "showClearButton": true
           }
         ],
-        "questionTitleLocation": "top"
       }
     ]
   };
@@ -277,6 +267,6 @@ void main() {
   List<Map<String, dynamic>> data = List();
   data.add({"question1": "test"});
   data.add({"question2": []});
-
+  data.add({"question3": []});
   surveyChecker.completeSurvey(surveyJsonParser.parseSurveyJson(survey), data);
 }

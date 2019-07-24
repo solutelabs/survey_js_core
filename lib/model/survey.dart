@@ -1,7 +1,5 @@
 import 'package:survey_js_core/model/page.dart';
-import 'package:survey_js_core/model/question.dart';
-import 'package:survey_js_core/model/element_survey.dart';
-import 'package:survey_js_core/model/panel.dart';
+
 import 'base.dart';
 
 class Survey extends Base implements SurveyEvents {
@@ -128,30 +126,39 @@ class Survey extends Base implements SurveyEvents {
         _getShowNavigationButton(json["showNavigationButton"]);
     showTimerPanel = _getShowTimerPanel(json["showTimerPanel"]);
     showProgressBar = _getShowProgressbar(json["showProgressbar"]);
-    showQuestionNumber =_getShowQuestionNumber(json["showQuestionNumber"]);
-    surveyState=_getSurveyState(json["surveyState"]);
+    showQuestionNumber = _getShowQuestionNumber(json["showQuestionNumber"]);
+    surveyState = _getSurveyState(json["surveyState"]);
   }
 
-  SurveyState _getSurveyState(String surveyState){
-    switch(surveyState){
-      case "loading":return SurveyState.LOADING;
-      case "completed":return SurveyState.COMPLETED;
-      case "starting":return SurveyState.STARTING;
-      case "running":return SurveyState.RUNNING;
-      case "empty":return SurveyState.EMPTY;
-      default:return SurveyState.EMPTY;
+  SurveyState _getSurveyState(String surveyState) {
+    switch (surveyState) {
+      case "loading":
+        return SurveyState.LOADING;
+      case "completed":
+        return SurveyState.COMPLETED;
+      case "starting":
+        return SurveyState.STARTING;
+      case "running":
+        return SurveyState.RUNNING;
+      case "empty":
+        return SurveyState.EMPTY;
+      default:
+        return SurveyState.EMPTY;
     }
   }
 
-  ShowQuestionNumber _getShowQuestionNumber(String showQuestionNumber){
-    switch(showQuestionNumber){
-      case "on":return ShowQuestionNumber.ON;
-      case "off":return ShowQuestionNumber.OFF;
-      case "onPage":return ShowQuestionNumber.ON_PAGE;
-      default:return ShowQuestionNumber.ON;
+  ShowQuestionNumber _getShowQuestionNumber(String showQuestionNumber) {
+    switch (showQuestionNumber) {
+      case "on":
+        return ShowQuestionNumber.ON;
+      case "off":
+        return ShowQuestionNumber.OFF;
+      case "onPage":
+        return ShowQuestionNumber.ON_PAGE;
+      default:
+        return ShowQuestionNumber.ON;
     }
   }
-
 
   ShowProgressBar _getShowProgressbar(String showProgressbar) {
     switch (showProgressbar) {
@@ -243,135 +250,6 @@ class Survey extends Base implements SurveyEvents {
         return ClearInvisibleValues.ON_COMPLETE;
     }
   }
-
-  void addNewPage(String name) {
-    //todo add page to [pages]
-  }
-
-  void addPage(PageModel pageModel) {
-    //todo add page to survey pages
-  }
-
-  void clear(bool clearData, gotoFirstPage) {
-    //todo clear survey data and state
-  }
-
-  void clearIncorrectValues() {
-    //todo Call this function to remove all question values from the survey, that end-user will not be able to enter
-  }
-
-  void clearValue(String name) {
-    //todo remove value from survey result
-  }
-
-  bool completeLastPage() {
-    //todo complete the survey,if current page is last.false if page has error.
-  }
-
-  void doComplete() {
-    //todo complete survey,set survey into completed
-  }
-
-  void focusFirstQuestion() {
-    //todo set the input focus to the first question with the input.
-  }
-
-  List<QuestionModel> getAllQuestions(bool visibleOnly) {
-    //todo return all question in survey.
-  }
-
-  String getComment(String name) {
-    //todo return comment value.
-  }
-
-  num getCorrectAnswerCount() {
-    //todo Returns the number of corrected answers on quiz
-  }
-
-  num getInCorrectAnswerCount() {
-    //todo Returns the number of inCorrected answers on quiz
-  }
-
-  num getProgress() {
-    //todo Returns the progress that a user made by answering on the survey.
-  }
-
-  PageModel getPageByElement(ElementSurvey element) {
-    //todo Returns a page on which an element (question or panel) is placed.
-  }
-
-  PageModel getPageByName(String name) {
-    //todo Returns a page by its name.
-  }
-
-  PageModel getPageByQuestion(QuestionModel questionModel) {
-    //todo Returns a page on which a question is located
-  }
-
-  PageModel getPageByNames(List<String> names) {
-    //todo Returns a list of pages by their names
-  }
-
-  PanelModel getPanelByName(String name, bool caseInsensitive) {
-    //todo Returns a panel by its name
-  }
-
-  dynamic getPropertyValue(String name) {
-    //todo Returns the property value by name
-  }
-
-  QuestionModel getQuestionByName(String name) {
-    //todo Returns a question by its name
-  }
-
-  List<QuestionModel> getQuestionByNames(List<String> names,
-      bool caseInsensitive) {
-    //todo Get a list of questions by their names
-  }
-
-  QuestionModel getQuestionByValueName(String name, bool caseInsensitive) {
-    //todo Returns a question by its ValueName
-  }
-
-  List<QuestionModel> getQuestions() {
-    //todo All visible questions that has input(s) widgets.
-  }
-
-  String getType() {
-    //todo
-  }
-
-  List<String> getUsedLocales() {
-    //todo
-  }
-
-  bool nextPage() {
-    //todo call to next page,return false if page is last
-  }
-
-  bool previousPage() {
-    //todo call to previous page,return false if page is first
-  }
-
-  void removePage() {
-    //todo remove page from survey
-  }
-
-  void setComment(String name, String newValue) {
-    //todo Set the comment value
-  }
-
-  void start() {
-    //todo startSurvey
-  }
-
-  void startTimer() {
-    //todo start timer of user spend on survey
-  }
-
-  void stopTimer() {
-    //todo stop timer of user spend on survey
-  }
 }
 
 class JsonError {}
@@ -395,13 +273,13 @@ class SurveyValidator {
 
   ValidatorType validatorType;
 
-  num minValue, maxValue, minCount, maxCount,minLength,maxLength;
+  num minValue, maxValue, minCount, maxCount, minLength, maxLength;
 
-  bool allowDigit=true;
+  bool allowDigit = true;
 
   SurveyValidator(Map<String, dynamic> validator) {
     validatorType = _getValidatorType(validator["type"]);
-    text=validator["text"];
+    text = validator["text"];
     maxCount = validator["maxCount"];
     minCount = validator["minCount"];
     minValue = validator["minValue"];
@@ -410,7 +288,7 @@ class SurveyValidator {
     maxLength = validator["maxLength"];
     regex = validator["regex"];
     expression = validator["expression"];
-    allowDigit= validator["allowDigit"]??true;
+    allowDigit = validator["allowDigit"] ?? true;
   }
 
   ValidatorType _getValidatorType(String type) {

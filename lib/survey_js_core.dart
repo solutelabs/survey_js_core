@@ -1,8 +1,10 @@
 library survey_js_core;
 
+import 'package:meta/meta.dart';
+
 import 'model/page.dart';
 import 'model/survey.dart';
-import 'package:meta/meta.dart';
+
 class SurveyJsonParser {
   Survey parseSurveyJson(Map<String, dynamic> json) {
     Survey survey = Survey(json);

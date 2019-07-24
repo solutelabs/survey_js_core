@@ -1,11 +1,11 @@
+import 'package:survey_js_core/exceptions.dart';
 import 'package:survey_js_core/model/panel.dart';
+import 'package:survey_js_core/model/question_dropdown.dart';
 
 import 'question.dart';
-import 'question_text.dart';
-import 'package:survey_js_core/exceptions.dart';
 import 'question_checkbox.dart';
 import 'question_radio.dart';
-import 'package:survey_js_core/model/question_dropdown.dart';
+import 'question_text.dart';
 
 class ElementSurvey {
   List<QuestionModel> questions;

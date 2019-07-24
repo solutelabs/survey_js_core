@@ -16,8 +16,4 @@ class QuestionCheckboxModel extends QuestionCheckboxBaseModel {
     noneText = json["noneText"];
     selectAllText = json["selectAllText"];
   }
-
-  bool isItemSelected(ItemValue itemValue) {
-    //todo returns if item isSelected
-  }
 }

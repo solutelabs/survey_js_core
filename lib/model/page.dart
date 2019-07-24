@@ -1,5 +1,4 @@
 import 'package:survey_js_core/model/element_survey.dart';
-import 'package:survey_js_core/model/panel.dart';
 
 class PageModel {
   bool readOnly, visible, areQuestionRandomized, isStarted, wasShown;
@@ -79,22 +78,6 @@ class PageModel {
     }
   }
 
-  void focusFirstErrorQuestion() {
-    //todo focus the input of the first question that has an error.
-  }
-
-  void focusFirstQuestion() {
-    //todo focus the input on the first question
-  }
-
-  List<PanelModel> getAllPanel() {
-    //todo return panel in the page
-  }
-
-  void scrollToTop() {
-    //todo call to scroll to top.
-  }
-
   @override
   bool operator ==(other) {
     if (identical(this, other)) {
@@ -105,7 +88,7 @@ class PageModel {
 
   @override
   int get hashCode {
-    return this.hashCode^this.name.hashCode;
+    return this.hashCode ^ this.name.hashCode;
   }
 }
 

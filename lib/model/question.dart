@@ -28,7 +28,7 @@ class QuestionModel {
       isAllowTitleLeft,
       isPanel,
       isReadOnly,
-      isRequired=false,
+      isRequired = false,
       isVisible,
       startWithNewLine,
       visible;
@@ -75,7 +75,7 @@ class QuestionModel {
       isAllowTitleLeft = json["isAllowTitleLeft"];
       isPanel = json["isPanel"];
       isReadOnly = json["isReadOnly"];
-      isRequired = json["isRequired"]??false;
+      isRequired = json["isRequired"] ?? false;
       isVisible = json["isVisible"];
       startWithNewLine = json["startWithNewLine"];
       visible = json["visible"];
@@ -112,50 +112,6 @@ class QuestionModel {
   @override
   int get hashCode {
     return this.hashCode ^ this.name.hashCode;
-  }
-
-  void addError(SurveyError surveyError) {
-    //todo add error to question
-  }
-
-  void clearErrors() {
-    //todo clear all errors in the question
-  }
-
-  void clearInCorrectValues() {
-    //todo remove values from the current question, that end-user will not be able to enter.
-  }
-
-  void focus(bool onError) {
-    //todo Move the focus to the input of this question.
-  }
-
-  List<SurveyError> getAllErrors() {
-//todo Returns a copy of question errors survey
-  }
-
-  String getLocale() {
-    //todo currentSurveyLocale
-  }
-
-  String getTitleLocation() {
-    //todo title location based on question
-  }
-
-  bool hasErrors() {
-    //todo if validation error
-  }
-
-  bool isEmpty() {
-    //todo true if question value is empty
-  }
-
-  bool moveTo(PanelModel panelModel, dynamic insertBefore) {
-    //todo Move question to a new container Page/Panel. Add as a last element if insertBefore parameter is not used or inserted into the given index, if insert parameter is number, or before the given element, if the insertBefore parameter is a question or panel
-  }
-
-  void removeError(SurveyError surveyError) {
-    //todo remove error from question.
   }
 }
 
