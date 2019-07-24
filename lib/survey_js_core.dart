@@ -1,33 +1,23 @@
 library survey_js_core;
 
-import 'model/question_text.dart';
-import 'exceptions.dart';
-import 'model/question_checkbox.dart';
+import 'package:meta/meta.dart';
+
+import 'model/page.dart';
+import 'model/survey.dart';
 
 class SurveyJsonParser {
-  QuestionTextModel parseQuestionTypeText(Map<String, dynamic> json) {
-    if (json["type"] == "text") {
-      try {
-        final questionTextModel = QuestionTextModel(json);
-        return questionTextModel.parseQuestionTypeText(json);
-      } catch (exception) {
-        throw Exception();
-      }
-    } else {
-      throw InvalidTypeException("type not match");
-    }
+  Survey parseSurveyJson(Map<String, dynamic> json) {
+    Survey survey = Survey(json);
+    survey.pages = parseAllPages(json);
+    return survey;
   }
 
-  QuestionCheckboxModel parseQuestionTypeCheckbox(Map<String, dynamic> json) {
-    if (json["type"] == "checkbox") {
-      try{
-       final questionCheckboxModel=QuestionCheckboxModel(json);
-       return questionCheckboxModel.parseQuestionTypeCheckbox(json);
-      }catch(exception){
-        throw exception;
-      }
-    } else {
-      throw InvalidTypeException("type not match");
-    }
+  @visibleForTesting
+  List<PageModel> parseAllPages(Map<String, dynamic> json) {
+    var pages = (json["pages"] as List<Map<String, dynamic>>)?.map((page) {
+      final pageModel = PageModel(page);
+      return pageModel;
+    })?.toList();
+    return pages;
   }
 }

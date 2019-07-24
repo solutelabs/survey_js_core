@@ -7,14 +7,11 @@ class QuestionTextModel extends QuestionModel {
 
   num maxLength, size;
 
-  QuestionTextModel(Map<String, dynamic> json) : super(json);
-
-  QuestionTextModel parseQuestionTypeText(json) {
+  QuestionTextModel(Map<String, dynamic> json) : super(json) {
     inputType = getInputType(json["inputType"]);
     placeHolder = json["placeHolder"];
     maxLength = json["maxLength"];
     size = json["size"];
-    return this;
   }
 
   InputType getInputType(String type) {
@@ -50,15 +47,6 @@ class QuestionTextModel extends QuestionModel {
       default:
         return InputType.TEXT;
     }
-  }
-
-  @override
-  bool operator ==(other) {
-    var questionTextModel = (other as QuestionTextModel);
-    return questionTextModel.placeHolder == this.placeHolder &&
-        questionTextModel.inputType == this.inputType &&
-        questionTextModel.maxLength == this.maxLength &&
-        questionTextModel.size == this.size;
   }
 }
 
