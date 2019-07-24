@@ -1,7 +1,5 @@
 library survey_js_core;
 
-import 'package:meta/meta.dart';
-
 import 'model/page.dart';
 import 'model/survey.dart';
 
@@ -12,7 +10,6 @@ class SurveyJsonParser {
     return survey;
   }
 
-  @visibleForTesting
   List<PageModel> parseAllPages(Map<String, dynamic> json) {
     var pages = (json["pages"] as List<Map<String, dynamic>>)?.map((page) {
       final pageModel = PageModel(page);
