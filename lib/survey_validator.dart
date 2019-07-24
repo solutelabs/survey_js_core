@@ -1,8 +1,6 @@
 import 'package:survey_js_core/model/page.dart';
 import 'package:survey_js_core/model/question.dart';
 import 'package:survey_js_core/model/survey.dart';
-import 'package:survey_js_core/survey_js_core.dart';
-
 import 'model/panel.dart';
 
 class SurveyChecker {
@@ -12,13 +10,13 @@ class SurveyChecker {
       Survey surveyModel, List<Map<String, dynamic>> data) {
     PageModel pageModel = surveyModel.pages.first;
 
-    validateQuestions(pageModel.element.questions, data);
+    _validateQuestions(pageModel.element.questions, data);
 
-    validatePanels(pageModel.element.panels, data);
+    _validatePanels(pageModel.element.panels, data);
     return surveyCheckerError;
   }
 
-  void validateQuestions(
+  void _validateQuestions(
       List<QuestionModel> questions, List<Map<String, dynamic>> data) {
     questions.forEach((surveyQuestion) {
       Map<String, dynamic> answerToValidate;
@@ -149,17 +147,17 @@ class SurveyChecker {
     }
   }
 
-  void validatePanels(
+  void _validatePanels(
       List<PanelModel> panels, List<Map<String, dynamic>> data) {
     panels?.forEach((panel) {
       try {
         if (panel.elementSurvey.questions != null) {
-          validateQuestions(panel.elementSurvey.questions, data);
+          _validateQuestions(panel.elementSurvey.questions, data);
         } else {
-          validatePanels(panel.elementSurvey.panels, data);
+          _validatePanels(panel.elementSurvey.panels, data);
         }
       } catch (exception) {
-        validatePanels(panel.elementSurvey.panels, data);
+        _validatePanels(panel.elementSurvey.panels, data);
       }
     });
   }
@@ -178,95 +176,4 @@ class SurveyCheckerError {
 
   @override
   int get hashCode => this.map.keys.first.hashCode;
-}
-
-void main() {
-  SurveyChecker surveyChecker = SurveyChecker();
-  var survey = {
-    "pages": [
-      {
-        "name": "page1",
-        "elements": [
-          {
-            "type": "text",
-            "name": "question1",
-            "title": "your name",
-            "valueName": "name",
-            "isRequired": true,
-            "validators": [
-              {
-                "type": "text",
-                "text": "invalid text entered",
-                "minLength": 5,
-                "maxLength": 25,
-                "allowDigits": true
-              },
-              {
-                "type": "email",
-                "text": "invalid email entered",
-              },
-              {
-                "type": "regex",
-                "text": "invalid regex entered",
-                "regex":"[a-zA-Z]"
-              },
-              {
-                "type": "numeric",
-                "text": "invalid value entered",
-                "minValue": 5,
-                "maxValue": 25,
-              }
-            ],
-          },
-          {
-            "type": "panel",
-            "name": "panel1",
-            "elements": [
-              {
-                "type": "panel",
-                "name": "panel2",
-                "elements": [
-                  {
-                    "type": "panel",
-                    "name": "panel3",
-                    "elements": [
-                      {
-                        "type": "radiogroup",
-                        "name": "question7",
-                        "isRequired":true,
-                        "choices": ["item1", "item2", "item3"]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "checkbox",
-            "name": "question2",
-            "title": "select song language you listen",
-            "valueName": "song you listen..",
-            "isRequired": true,
-            "hasComment": true,
-            "choices": ["hindi", "english", "gujarati"],
-            "selectAllText": "all language"
-          },
-          {
-            "type": "radiogroup",
-            "name": "question3",
-            "title": "select gender",
-            "isRequired": true,
-            "choices": ["male", "female", "other"],
-          }
-        ],
-      }
-    ]
-  };
-  SurveyJsonParser surveyJsonParser = SurveyJsonParser();
-  List<Map<String, dynamic>> data = List();
-  data.add({"question1": "test"});
-  data.add({"question2": []});
-  data.add({"question3": []});
-  surveyChecker.completeSurvey(surveyJsonParser.parseSurveyJson(survey), data);
 }
