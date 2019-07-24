@@ -1,6 +1,6 @@
 name: survey_js_core
 description: Flutter package for parsing survey json.
-version: 0.0.1
+version: 0.0.2+1
 author: Deep Naik <deep.n@solutelabs.com>
 homepage: https://github.com/solutelabs/survey_js_core
 
