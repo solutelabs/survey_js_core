@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:survey_js_core/survey_validator.dart';
 import 'package:survey_js_core/survey_js_core.dart';
+import 'package:survey_js_core/survey_validator.dart';
 
 void main() {
   SurveyChecker surveyChecker = SurveyChecker();
@@ -24,6 +24,21 @@ void main() {
                 "minLength": 5,
                 "maxLength": 25,
                 "allowDigits": true
+              },
+              {
+                "type": "email",
+                "text": "invalid email entered",
+              },
+              {
+                "type": "regex",
+                "text": "invalid regex entered",
+                "regex": "[a-zA-Z]"
+              },
+              {
+                "type": "numeric",
+                "text": "invalid value entered",
+                "minValue": 5,
+                "maxValue": 25,
               }
             ],
             "requiredErrorText": "please enter your name",
@@ -45,8 +60,8 @@ void main() {
                       {
                         "type": "checkbox",
                         "name": "question2",
-                        "isRequired":true,
-                        "choices": ["itemA","itemB","itemC"]
+                        "isRequired": true,
+                        "choices": ["itemA", "itemB", "itemC"]
                       }
                     ]
                   }
@@ -96,7 +111,8 @@ void main() {
   List<SurveyCheckerError> errors = List();
 
   errors.add(SurveyCheckerError({"question1": "invalid text entered"}));
-  errors.add(SurveyCheckerError({"question7": "field is empty"}));
+  errors.add(SurveyCheckerError({"question1": "invalid value entered"}));
+  errors.add(SurveyCheckerError({"question7": "invalid value entered"}));
   errors.add(SurveyCheckerError({"question3": "field is empty"}));
   errors.add(SurveyCheckerError({"question2": "field is empty"}));
 
