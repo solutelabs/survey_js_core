@@ -2,12 +2,12 @@
 ## Package for generating survey model from json.
 ![Pub](https://img.shields.io/pub/v/survey_js_core) ![GitHub](https://img.shields.io/github/license/solutelabs/survey_js_core)
 ## Table of Contents
-- About survey-js
-- About survey-js-core
-- How to add
-- Usage
-- Future plans
-- community help
+- [About survey-js](https://github.com/solutelabs/survey_js_core/blob/master/README.md#about-survey-js "About survey-js")
+- [About survey-js-core](https://github.com/solutelabs/survey_js_core/blob/master/README.md#about-survey-js-core "About survey-js-core")
+- [How to add](https://github.com/solutelabs/survey_js_core/blob/master/README.md#how-to-add "How to add")
+- [Usage](https://github.com/solutelabs/survey_js_core/blob/master/README.md#usage "Usage")
+- [Future plans](https://github.com/solutelabs/survey_js_core/blob/master/README.md#future-plans "Future plans")
+- [community help](https://github.com/solutelabs/survey_js_core/blob/master/README.md#community-help "community help")
 
 ## About survey-js
 Survey js is a library that can build fully customizable online surveys and forms.
@@ -60,8 +60,8 @@ Note:-currently there are four question type supported.
 for more information visit https://surveyjs.io/.
 
 ## Future plans
-1. currently the core package genrates the survey model based on the survey json,  in the future releses we will render ui based on generated survey model.
+1. currently the core package genrates the survey model based on the survey json,  in the future releses we will create seperate package for flutter to render ui based on generated survey model.
 2. add more question types to core package.
 
 ## Community help
-we as a community can make a full featured package.you can submit pull request to [survey-js-core](https://github.com/solutelabs/survey_js_core "survey-js-core").
+We as a community can make a full featured package.you can submit pull request to [survey-js-core](https://github.com/solutelabs/survey_js_core "survey-js-core").
