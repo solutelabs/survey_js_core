@@ -11,8 +11,9 @@
 
 ## About survey-js
 Survey js is a library that can build fully customizable online surveys and forms.
-with the help of [survey creator](https://surveyjs.io/create-survey/http:// "survey creator") user can build survey definations.after that integrate survey runner for  angular2+, jQuery, knockout, react or vue into your web page.
-Survey can contain multiple pages,panels,different types of questions.The result of survey can be store in database.
+with the help of [survey creator](https://surveyjs.io/create-survey/http:// "survey creator") user can build survey definations. After that integrate survey runner for  angular2+, jQuery, knockout, react or vue into your web page.
+
+Survey can contain multiple pages, panels, different types of questions. The result of survey can be store in database.
 for more information visit [Survey js](https://surveyjs.io/Documentation/Library/ "Survey js")
 
 ## About survey-js-core
