@@ -16,9 +16,7 @@ Survey can contain multiple pages,panels,different types of questions.The result
 for more information visit [Survey js](https://surveyjs.io/Documentation/Library/ "Survey js")
 
 ## About survey-js-core
-survey-js-core package provide you same feature as survey-js library for mobile.you can create survey json from survey-js and give that json as input to core package.core package parse that json and give you survey model.
-survey can have multiple pages,panel,questions with validations of input.
-survey model can furthur use for rendering widgets in flutter in future releses.
+survey-js-core package provide you same feature as survey-js library for mobile. You can create survey json from survey-js and give that json as input to core package. Core package parse that json and give you survey model. Survey can have multiple pages,panel,questions with validations of input. Survey model can furthur use for rendering widgets in flutter in future releses.
 
 ## How to add
 for adding survey-js-core to your project you have to add below dependency to your pubspec.yaml file.
